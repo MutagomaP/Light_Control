@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Light Control</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/4.3.7/mqtt.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --secondary: #818CF8;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --success: #34D399;
+            --warning: #FBBF24;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--dark), #2D3748);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .light-header {
+            text-align: center;
+            color: var(--light);
+            margin-bottom: 2rem;
+        }
+
+        .light-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        opacity: 0.5;
+    }
+
+    .light-icon.on {
+        opacity: 1;
+        text-shadow: 0 0 20px rgba(255, 255, 100, 0.8),
+                     0 0 40px rgba(255, 255, 0, 0.6);
+    }
+
+        .status-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--warning);
+            transition: all 0.3s ease;
+        }
+
+        .status-indicator.on {
+            background: var(--success);
+            box-shadow: 0 0 15px var(--success);
+        }
+
+        .control-button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .brightness-control {
+            margin-top: 2rem;
+        }
+
+        .brightness-label {
+            color: var(--light);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .brightness-slider {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            -webkit-appearance: none;
+        }
+
+        .brightness-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid var(--light);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="light-header">
+            <div class="light-icon">💡</div>
+            <h1>Smart Light</h1>
+        </div>
+
+        <div class="status-container">
+            <div id="statusIndicator" class="status-indicator"></div>
+            <h2 id="statusText">Light is OFF</h2>
+        </div>
+
+        <button id="lightToggle" class="control-button">Turn ON</button>
+
+        <div class="brightness-control">
+            <label class="brightness-label">Brightness</label>
+            <input type="range" min="1" max="100" value="100" class="brightness-slider" id="brightnessSlider">
+        </div>
+    </div>
+
+    <script>
+        // ... existing MQTT setup code ...
+
+        const lightToggle = document.getElementById('lightToggle');
+    const statusIndicator = document.getElementById('statusIndicator');
+    const statusText = document.getElementById('statusText');
+    const lightIcon = document.querySelector('.light-icon');  // Add this line
+
+    function updateLightState(isOn) {
+        if (isOn) {
+            statusIndicator.classList.add('on');
+            lightIcon.classList.add('on');  // Add this line
+            statusText.innerText = 'Light is ON';
+            lightToggle.textContent = 'Turn OFF';
+        } else {
+            statusIndicator.classList.remove('on');
+            lightIcon.classList.remove('on');  // Add this line
+            statusText.innerText = 'Light is OFF';
+            lightToggle.textContent = 'Turn ON';
+        }
+    }
+
+
+        // ... rest of your existing JavaScript ...
+    </script>
+</body>
+</html>
